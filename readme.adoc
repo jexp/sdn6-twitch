@@ -1,0 +1,66 @@
+== Spring Data Neo4j Twitch Demo
+:src: src/main/java/org/neo4j/movies/
+
+Demo of Spring Data Neo4j 6 (SDN6 aka SDN-RX)
+
+https://youtu.be/w0XZHOavqOM[Youtube Video]
+
+++++
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w0XZHOavqOM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+++++
+
+I will be exploring what my colleagues Michael and Gerrit made available in Spring Boot 2.4-SNAPSHOT - Spring Data Neo4j 6 formerly SDN RX
+Join me on my journey through reactive repositories, templates, controllers and more ...
+
+WARNING: The `application.properties` configuration changed from SDN-RX and all documented cases
+
+.application.properties
+[source,ini]
+----
+spring.neo4j.authentication.username=neo4j
+spring.neo4j.authentication.password=test
+spring.neo4j.uri=bolt://localhost:7687
+----
+
+=== Flow
+
+. add `CommandLineRunner` `Bean` `run` method to application for "Hello World"
+. get driver injected and do a read query with output
+. move nodeCount method to `MoviesService`
+. get template injected, query with `Neo4jTemplate`
+. add `Movie` domain object
+. query with template for movie, add to controller
+. inject reactive template, return flux, and map and delay in controller
+. add repository
+. use default repository method to find movies
+. find by example for year
+. show derived finder methods, tagline contains text
+. show annotated query method in repository
+. show rest-repositories
+. add `Person` entity and a `cast` to movie
+. add update method to service that saves new `ACTED_IN` relationship
+
+=== Classes
+
+* link:{src}MoviesApplication.java[MoviesApplication]
+* link:{src}MovieService.java[MoviesService]
+* link:{src}MoviesController.java[MoviesController]
+* link:{src}Movie.java[Movie]
+* link:{src}MovieRepository.java[MovieRepository]
+* link:{src}Person.java[Person]
+
+=== Endpoints
+
+* curl http://localhost:8080/titles
+* curl http://localhost:8080/byYear/1995
+* curl http://localhost:8080/tagline?text=one
+* curl http://localhost:8080/acting/Tom%20Hanks/Sleepless%20in%20Seattle -XPOST
+* curl http://localhost:8080/movie (Rest Repository)
+
+
+=== References
+
+- https://medium.com/neo4j/goodbye-sdn-%EF%B8%8Frx-eccee8e18d00[Medium Post]
+- https://github.com/michael-simons/neo4j-sdn-ogm-tips/tree/master/examples/sdn6[Michael Simons SDN6 Example]
+- https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.4.0.BUILD-SNAPSHOT&packaging=jar&jvmVersion=11&groupId=org.neo4j&artifactId=movies&name=movies&description=Movie%20Demo%20for%20SDN6&packageName=org.neo4j.movies&dependencies=data-neo4j,web,webflux,devtools,data-rest[Spring Initializer (shared)]
+- https://docs.spring.io/spring-data/neo4j/docs/6.0.0-SNAPSHOT/reference/html/#[SDN6 documentation (to be updated)]
